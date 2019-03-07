@@ -6,4 +6,8 @@
     <string name="title_readouts">Readouts</string>
     <string name="title_binnacle">Binnacle</string>
     <string name="title_charts">Charts</string>
+    <string name="access_token">pk.eyJ1Ijoid2lsbG53YWxrZXIiLCJhIjoiY2l5NzU5YWw0MDAycjMzbzZtbnIycWFvbyJ9.bze7QA84drv6yb37eK8xqg</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
