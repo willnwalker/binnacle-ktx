@@ -2,8 +2,10 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph"
-            app:startDestination="@id/chartFragment">
+            app:startDestination="@id/binnacleFragment">
 
     <fragment android:id="@+id/chartFragment" android:name="xyz.willnwalker.binnacle.ChartFragment"
               android:label="fragment_chart" tools:layout="@layout/fragment_chart"/>
+    <fragment android:id="@+id/binnacleFragment" android:name="xyz.willnwalker.binnacle.BinnacleFragment"
+              android:label="fragment_binnacle" tools:layout="@layout/fragment_binnacle"/>
 </navigation>

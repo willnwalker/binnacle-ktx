@@ -12,7 +12,7 @@
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" app:navGraph="@navigation/nav_graph" app:defaultNavHost="true"
-            tools:layout_editor_absoluteY="327dp" tools:layout_editor_absoluteX="142dp" android:id="@+id/fragment"/>
+            tools:layout_editor_absoluteY="327dp" tools:layout_editor_absoluteX="142dp" android:id="@+id/navHostFragment"/>
     <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/nav_view"
             android:layout_width="0dp"

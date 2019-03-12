@@ -5,18 +5,29 @@ import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), OnFragmentInteractionListener{
 
+    private lateinit var bottomNav: BottomNavigationView
+    private lateinit var navController: NavController
+
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
-            R.id.navigation_home -> {
+            bottomNav.selectedItemId -> {
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_dashboard -> {
+            R.id.navigation_readouts -> {
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_notifications -> {
+            R.id.navigation_binnacle -> {
+                navController.navigate(R.id.binnacleFragment)
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_charts -> {
+                navController.navigate(R.id.chartFragment)
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -26,9 +37,10 @@ class MainActivity : AppCompatActivity(), OnFragmentInteractionListener{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val navView: BottomNavigationView = findViewById(R.id.nav_view)
-
-        navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+        navController=findNavController(R.id.navHostFragment)
+        bottomNav = nav_view
+        bottomNav.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+        bottomNav.selectedItemId = R.id.navigation_charts
     }
 
     override fun onFragmentInteraction(uri: Uri) {
