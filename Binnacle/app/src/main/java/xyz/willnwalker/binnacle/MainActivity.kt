@@ -9,7 +9,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), OnFragmentInteractionListener{
+class MainActivity : AppCompatActivity(), OnFragmentInteractionListener {
 
     private lateinit var bottomNav: BottomNavigationView
     private lateinit var navController: NavController
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity(), OnFragmentInteractionListener{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        navController=findNavController(R.id.navHostFragment)
+        navController = findNavController(R.id.navHostFragment)
         bottomNav = nav_view
         bottomNav.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
         bottomNav.selectedItemId = R.id.navigation_charts

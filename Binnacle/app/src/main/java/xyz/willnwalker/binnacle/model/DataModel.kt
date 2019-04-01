@@ -6,13 +6,20 @@ enum class SensorType{
 }
 
 abstract class DataModelBase{
-    abstract var currentBoat: Boat
-    abstract var idealBoat: Boat
-    abstract var wind: Wind
+    lateinit var currentBoat: Boat
+    lateinit var idealBoat: Boat
+    lateinit var wind: Wind
 }
 
-class DataModel: DataModelBase(){
+class DataModel(sensorType: SensorType): DataModelBase(){
     init{
-        
+        when(sensorType){
+            SensorType.Phone ->{
+
+            }
+            SensorType.Bluetooth->{
+
+            }
+        }
     }
 }
