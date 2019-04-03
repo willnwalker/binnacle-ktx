@@ -39,8 +39,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation 'com.github.tlgbltcn:BluetoothHelper:v1.0'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:7.2.0'
+    implementation 'com.afollestad.material-dialogs:core:2.6.0'
 
-    def nav_version = "2.0.0-rc02"
+    def nav_version = "2.1.0-alpha02"
 
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version" // For Kotlin use navigation-fragment-ktx
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version" // For Kotlin use navigation-ui-ktx
