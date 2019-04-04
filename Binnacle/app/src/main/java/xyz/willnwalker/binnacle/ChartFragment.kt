@@ -7,12 +7,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.location.LocationComponentOptions
+import com.mapbox.mapboxsdk.location.modes.CameraMode
+import com.mapbox.mapboxsdk.location.modes.RenderMode
 import com.mapbox.mapboxsdk.maps.MapView
+import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.Style
 import kotlinx.android.synthetic.main.fragment_chart.*
 
@@ -25,6 +29,7 @@ import kotlinx.android.synthetic.main.fragment_chart.*
 class ChartFragment : Fragment(), PermissionsListener {
     private var listener: OnFragmentInteractionListener? = null
     private lateinit var mMapView: MapView
+    private lateinit var map: MapboxMap
 
     override fun onStart() {
         super.onStart()
@@ -79,16 +84,11 @@ class ChartFragment : Fragment(), PermissionsListener {
         mMapView = mapView
         mMapView.onCreate(savedInstanceState)
         mMapView.getMapAsync{ mapboxMap ->
+            map = mapboxMap
             mapboxMap.setStyle(Style.LIGHT){
                 // TODO: Add pins, other map decorations here
+                showDeviceLocation(it)
             }
-        }
-        if(PermissionsManager.areLocationPermissionsGranted(requireContext())){
-            /// TODO: Display User's current location
-            showDeviceLocation()
-        }
-        else{
-            PermissionsManager(this).requestLocationPermissions(requireActivity())
         }
     }
 
@@ -127,7 +127,22 @@ class ChartFragment : Fragment(), PermissionsListener {
         listener = null
     }
 
-    private fun showDeviceLocation() {
-
+    private fun showDeviceLocation(loadedMapStyle: Style) {
+        if(PermissionsManager.areLocationPermissionsGranted(requireContext())){
+            /// TODO: Display User's current location
+            val options = LocationComponentOptions.builder(requireContext())
+                .trackingGesturesManagement(true)
+                .accuracyColor(ContextCompat.getColor(requireContext(), R.color.mapbox_blue))
+                .build()
+            val locationComponent = map.locationComponent
+            locationComponent.activateLocationComponent(requireContext(), loadedMapStyle)
+            locationComponent.applyStyle(options)
+            locationComponent.isLocationComponentEnabled = true
+            locationComponent.cameraMode = CameraMode.TRACKING
+            locationComponent.renderMode = RenderMode.COMPASS
+        }
+        else{
+            PermissionsManager(this).requestLocationPermissions(requireActivity())
+        }
     }
 }
