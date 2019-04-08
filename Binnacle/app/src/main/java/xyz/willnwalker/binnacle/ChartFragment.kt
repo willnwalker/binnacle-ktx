@@ -28,8 +28,10 @@ import kotlinx.android.synthetic.main.fragment_chart.*
  * to handle interaction events.
  */
 class ChartFragment : Fragment(), PermissionsListener {
+
     private val TAG: String = "ChartFragment"
     private var listener: OnFragmentInteractionListener? = null
+    private lateinit var permissionsManager: PermissionsManager
     private lateinit var mMapView: MapView
     private lateinit var mMap: MapboxMap
 
@@ -84,6 +86,7 @@ class ChartFragment : Fragment(), PermissionsListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "ChartFragment view created.")
+        permissionsManager = PermissionsManager(this)
         mMapView = mapView
         mMapView.onCreate(savedInstanceState)
         mMapView.getMapAsync{ mapboxMap ->
@@ -105,7 +108,12 @@ class ChartFragment : Fragment(), PermissionsListener {
         }
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
     override fun onPermissionResult(granted: Boolean) {
+        Log.d(TAG, "onPermissionResult called.")
         if(granted){
             showDeviceLocation(mMap.style!!)
             Log.d(TAG, "Location permission granted.")
@@ -155,7 +163,7 @@ class ChartFragment : Fragment(), PermissionsListener {
             locationComponent.renderMode = RenderMode.COMPASS
         }
         else{
-            PermissionsManager(this).requestLocationPermissions(requireActivity())
+            permissionsManager.requestLocationPermissions(requireActivity())
         }
     }
 }

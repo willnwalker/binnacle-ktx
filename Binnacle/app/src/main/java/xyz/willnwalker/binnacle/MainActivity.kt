@@ -2,6 +2,7 @@ package xyz.willnwalker.binnacle
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -10,12 +11,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), OnFragmentInteractionListener {
 
+    private val TAG: String = "MainActivity"
     private lateinit var mBottomNav: BottomNavigationView
     private lateinit var navController: NavController
 
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
-            bottomNav.selectedItemId -> {
+            mBottomNav.selectedItemId -> {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_readouts -> {
@@ -38,12 +40,16 @@ class MainActivity : AppCompatActivity(), OnFragmentInteractionListener {
         setContentView(R.layout.activity_main)
         navController = findNavController(R.id.navHostFragment)
         mBottomNav = bottomNavigationView
-        mbottomNav.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
-        bottomNav.selectedItemId = R.id.navigation_charts
+        mBottomNav.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+        mBottomNav.selectedItemId = R.id.navigation_charts
     }
 
     override fun onFragmentInteraction(uri: Uri) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        Log.d(TAG, "onRequestPermissionsResult in MainActivity called.")
     }
 }
 
