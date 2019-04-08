@@ -109,6 +109,7 @@ class ChartFragment : Fragment(), PermissionsListener {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        Log.d(TAG, "onRequestPermissionsResult in ChartFragment called.")
         permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
