@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), OnFragmentInteractionListener {
 
-    private lateinit var bottomNav: BottomNavigationView
+    private lateinit var mBottomNav: BottomNavigationView
     private lateinit var navController: NavController
 
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -37,8 +37,8 @@ class MainActivity : AppCompatActivity(), OnFragmentInteractionListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         navController = findNavController(R.id.navHostFragment)
-        bottomNav = nav_view
-        bottomNav.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+        mBottomNav = bottomNavigationView
+        mbottomNav.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
         bottomNav.selectedItemId = R.id.navigation_charts
     }
 

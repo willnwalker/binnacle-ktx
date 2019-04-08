@@ -3,6 +3,7 @@ package xyz.willnwalker.binnacle
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -27,9 +28,10 @@ import kotlinx.android.synthetic.main.fragment_chart.*
  * to handle interaction events.
  */
 class ChartFragment : Fragment(), PermissionsListener {
+    private val TAG: String = "ChartFragment"
     private var listener: OnFragmentInteractionListener? = null
     private lateinit var mMapView: MapView
-    private lateinit var map: MapboxMap
+    private lateinit var mMap: MapboxMap
 
     override fun onStart() {
         super.onStart()
@@ -81,10 +83,11 @@ class ChartFragment : Fragment(), PermissionsListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "ChartFragment view created.")
         mMapView = mapView
         mMapView.onCreate(savedInstanceState)
         mMapView.getMapAsync{ mapboxMap ->
-            map = mapboxMap
+            mMap = mapboxMap
             mapboxMap.setStyle(Style.LIGHT){
                 // TODO: Add pins, other map decorations here
                 showDeviceLocation(it)
@@ -93,14 +96,22 @@ class ChartFragment : Fragment(), PermissionsListener {
     }
 
     override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        permissionsToExplain!!.forEach {
+            Log.d(TAG, it)
+        }
+        MaterialDialog(requireContext()).show {
+            title(text = "Location Permission Required")
+            message(text = "Binnacle needs your device's location to show where you are on nautical charts.")
+        }
     }
 
     override fun onPermissionResult(granted: Boolean) {
         if(granted){
-            showDeviceLocation()
+            showDeviceLocation(mMap.style!!)
+            Log.d(TAG, "Location permission granted.")
         }
         else{
+            Log.d(TAG, "Location permission denied.")
             MaterialDialog(requireContext()).show {
                 title(text = "Can't get Device Location")
                 message(text = "Since you denied the Location Permission, Binnacle can't show your location. You can enable this permission from Device Settings -> App Info")
@@ -128,13 +139,15 @@ class ChartFragment : Fragment(), PermissionsListener {
     }
 
     private fun showDeviceLocation(loadedMapStyle: Style) {
+        Log.d(TAG, "Attempting to show device location.")
         if(PermissionsManager.areLocationPermissionsGranted(requireContext())){
+            Log.d(TAG, "Location permission previously granted. Showing device location.")
             /// TODO: Display User's current location
             val options = LocationComponentOptions.builder(requireContext())
                 .trackingGesturesManagement(true)
                 .accuracyColor(ContextCompat.getColor(requireContext(), R.color.mapbox_blue))
                 .build()
-            val locationComponent = map.locationComponent
+            val locationComponent = mMap.locationComponent
             locationComponent.activateLocationComponent(requireContext(), loadedMapStyle)
             locationComponent.applyStyle(options)
             locationComponent.isLocationComponentEnabled = true
