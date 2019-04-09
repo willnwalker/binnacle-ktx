@@ -6,7 +6,7 @@
     <string name="title_readouts">Readouts</string>
     <string name="title_binnacle">Binnacle</string>
     <string name="title_charts">Charts</string>
-    <string name="access_token">
+    <string name="mapbox_access_token">
         pk.eyJ1Ijoid2lsbG53YWxrZXIiLCJhIjoiY2l5NzU5YWw0MDAycjMzbzZtbnIycWFvbyJ9.bze7QA84drv6yb37eK8xqg
     </string>
 

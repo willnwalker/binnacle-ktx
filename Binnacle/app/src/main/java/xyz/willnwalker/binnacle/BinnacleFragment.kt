@@ -15,7 +15,7 @@ import android.view.ViewGroup
  * to handle interaction events.
  */
 class BinnacleFragment : Fragment() {
-    private var listener: OnFragmentInteractionListener? = null
+    private lateinit var listener: OnFragmentInteractionListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,22 +25,8 @@ class BinnacleFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_binnacle, container, false)
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
+        listener = context as OnFragmentInteractionListener
     }
 }

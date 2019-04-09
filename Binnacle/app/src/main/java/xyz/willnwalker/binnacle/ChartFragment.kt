@@ -1,7 +1,6 @@
 package xyz.willnwalker.binnacle
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -27,11 +26,10 @@ import kotlinx.android.synthetic.main.fragment_chart.*
  * [OnFragmentInteractionListener] interface
  * to handle interaction events.
  */
-class ChartFragment : Fragment(), PermissionsListener {
+class ChartFragment : Fragment() {
 
     private val TAG: String = "ChartFragment"
-    private var listener: OnFragmentInteractionListener? = null
-    private lateinit var permissionsManager: PermissionsManager
+    private lateinit var listener: OnFragmentInteractionListener
     private lateinit var mMapView: MapView
     private lateinit var mMap: MapboxMap
 
@@ -72,7 +70,7 @@ class ChartFragment : Fragment(), PermissionsListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Mapbox.getInstance(requireContext(), getString(R.string.access_token))
+        Mapbox.getInstance(requireContext(), getString(R.string.mapbox_access_token))
     }
 
     override fun onCreateView(
@@ -86,7 +84,6 @@ class ChartFragment : Fragment(), PermissionsListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "ChartFragment view created.")
-        permissionsManager = PermissionsManager(this)
         mMapView = mapView
         mMapView.onCreate(savedInstanceState)
         mMapView.getMapAsync{ mapboxMap ->
@@ -98,53 +95,9 @@ class ChartFragment : Fragment(), PermissionsListener {
         }
     }
 
-    override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
-        permissionsToExplain!!.forEach {
-            Log.d(TAG, it)
-        }
-        MaterialDialog(requireContext()).show {
-            title(text = "Location Permission Required")
-            message(text = "Binnacle needs your device's location to show where you are on nautical charts.")
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        Log.d(TAG, "onRequestPermissionsResult in ChartFragment called.")
-        permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
-    override fun onPermissionResult(granted: Boolean) {
-        Log.d(TAG, "onPermissionResult called.")
-        if(granted){
-            showDeviceLocation(mMap.style!!)
-            Log.d(TAG, "Location permission granted.")
-        }
-        else{
-            Log.d(TAG, "Location permission denied.")
-            MaterialDialog(requireContext()).show {
-                title(text = "Can't get Device Location")
-                message(text = "Since you denied the Location Permission, Binnacle can't show your location. You can enable this permission from Device Settings -> App Info")
-            }
-        }
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
+        listener = context as OnFragmentInteractionListener
     }
 
     private fun showDeviceLocation(loadedMapStyle: Style) {
@@ -159,9 +112,9 @@ class ChartFragment : Fragment(), PermissionsListener {
             val locationComponent = mMap.locationComponent
             locationComponent.activateLocationComponent(requireContext(), loadedMapStyle)
             locationComponent.applyStyle(options)
-            locationComponent.isLocationComponentEnabled = true
             locationComponent.cameraMode = CameraMode.TRACKING
             locationComponent.renderMode = RenderMode.COMPASS
+            locationComponent.isLocationComponentEnabled = true
         }
         else{
             permissionsManager.requestLocationPermissions(requireActivity())

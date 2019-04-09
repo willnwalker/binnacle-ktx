@@ -7,13 +7,17 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import com.afollestad.materialdialogs.MaterialDialog
+import com.mapbox.android.core.permissions.PermissionsListener
+import com.mapbox.android.core.permissions.PermissionsManager
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), OnFragmentInteractionListener, PermissionsListener {
 
     private val TAG: String = "MainActivity"
-    private lateinit var mBottomNav: BottomNavigationView
     private lateinit var navController: NavController
+    private lateinit var mBottomNav: BottomNavigationView
+    private lateinit var permissionsManager: PermissionsManager
 
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -41,15 +45,40 @@ class MainActivity : AppCompatActivity(), OnFragmentInteractionListener {
         navController = findNavController(R.id.navHostFragment)
         mBottomNav = bottomNavigationView
         mBottomNav.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+        permissionsManager = PermissionsManager(this)
         mBottomNav.selectedItemId = R.id.navigation_charts
     }
 
-    override fun onFragmentInteraction(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    /// Location stuff
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        Log.d(TAG, "onRequestPermissionsResult in MainActivity called.")
+        Log.d(TAG, "onRequestPermissionsResult called.")
+        permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
+        permissionsToExplain!!.forEach {
+            Log.d(TAG, it)
+        }
+        MaterialDialog(this).show {
+            title(text = "Location Permission Required")
+            message(text = "Binnacle needs your device's location to show where you are on nautical charts.")
+        }
+    }
+
+    override fun onPermissionResult(granted: Boolean) {
+        Log.d(TAG, "onPermissionResult called.")
+        if(granted){
+            showDeviceLocation(mMap.style!!)
+            Log.d(TAG, "Location permission granted.")
+        }
+        else{
+            Log.d(TAG, "Location permission denied.")
+            MaterialDialog(requireContext()).show {
+                title(text = "Can't get Device Location")
+                message(text = "Since you denied the Location Permission, Binnacle can't show your location. You can enable this permission from Device Settings -> App Info")
+            }
+        }
     }
 }
 
@@ -65,6 +94,5 @@ class MainActivity : AppCompatActivity(), OnFragmentInteractionListener {
  * for more information.
  */
 interface OnFragmentInteractionListener {
-    // TODO: Update argument type and name
-    fun onFragmentInteraction(uri: Uri)
+    fun isLocationGranted()
 }
