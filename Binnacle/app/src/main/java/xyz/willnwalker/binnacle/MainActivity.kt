@@ -2,6 +2,7 @@ package xyz.willnwalker.binnacle
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -82,6 +83,11 @@ class MainActivity : AppCompatActivity(), OnFragmentInteractionListener, Permiss
 
     override fun requestLocationPermissions() {
         PermissionsManager(this).requestLocationPermissions(this)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.overflow_menu, menu)
+        return true
     }
 }
 
