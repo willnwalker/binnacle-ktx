@@ -1,6 +1,5 @@
 package xyz.willnwalker.binnacle
 
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -74,11 +73,15 @@ class MainActivity : AppCompatActivity(), OnFragmentInteractionListener, Permiss
         }
         else{
             Log.d(TAG, "Location permission denied.")
-            MaterialDialog(requireContext()).show {
+            MaterialDialog(this).show {
                 title(text = "Can't get Device Location")
                 message(text = "Since you denied the Location Permission, Binnacle can't show your location. You can enable this permission from Device Settings -> App Info")
             }
         }
+    }
+
+    override fun requestLocationPermissions() {
+        PermissionsManager(this).requestLocationPermissions(this)
     }
 }
 
@@ -94,5 +97,5 @@ class MainActivity : AppCompatActivity(), OnFragmentInteractionListener, Permiss
  * for more information.
  */
 interface OnFragmentInteractionListener {
-    fun isLocationGranted()
+    fun requestLocationPermissions()
 }

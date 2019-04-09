@@ -8,8 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import com.afollestad.materialdialogs.MaterialDialog
-import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.location.LocationComponentOptions
@@ -117,7 +115,7 @@ class ChartFragment : Fragment() {
             locationComponent.isLocationComponentEnabled = true
         }
         else{
-            permissionsManager.requestLocationPermissions(requireActivity())
+            listener.requestLocationPermissions()
         }
     }
 }
