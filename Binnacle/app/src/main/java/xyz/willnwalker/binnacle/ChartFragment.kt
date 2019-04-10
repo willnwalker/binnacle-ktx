@@ -31,39 +31,9 @@ class ChartFragment : Fragment() {
     private lateinit var mMapView: MapView
     private lateinit var mMap: MapboxMap
 
-    override fun onStart() {
-        super.onStart()
-        mMapView.onStart()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mMapView.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        mMapView.onPause()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        mMapView.onStop()
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        mMapView.onLowMemory()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mMapView.onDestroy()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        mMapView.onSaveInstanceState(outState)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        listener = context as OnFragmentInteractionListener
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,29 +63,56 @@ class ChartFragment : Fragment() {
         }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        listener = context as OnFragmentInteractionListener
+    override fun onStart() {
+        super.onStart()
+        mMapView.onStart()
     }
+
+    override fun onResume() {
+        super.onResume()
+        mMapView.onResume()
+    }
+
+    /// Functions called while the fragment is running
 
     private fun showDeviceLocation(loadedMapStyle: Style) {
         Log.d(TAG, "Attempting to show device location.")
-        if(PermissionsManager.areLocationPermissionsGranted(requireContext())){
-            Log.d(TAG, "Location permission previously granted. Showing device location.")
-            /// TODO: Display User's current location
-            val options = LocationComponentOptions.builder(requireContext())
-                .trackingGesturesManagement(true)
-                .accuracyColor(ContextCompat.getColor(requireContext(), R.color.mapbox_blue))
-                .build()
-            val locationComponent = mMap.locationComponent
-            locationComponent.activateLocationComponent(requireContext(), loadedMapStyle)
-            locationComponent.applyStyle(options)
-            locationComponent.cameraMode = CameraMode.TRACKING
-            locationComponent.renderMode = RenderMode.COMPASS
-            locationComponent.isLocationComponentEnabled = true
-        }
-        else{
-            listener.requestLocationPermissions()
-        }
+        Log.d(TAG, "Location permission previously granted. Showing device location.")
+        /// TODO: Display User's current location
+        val options = LocationComponentOptions.builder(requireContext())
+            .trackingGesturesManagement(true)
+            .accuracyColor(ContextCompat.getColor(requireContext(), R.color.mapbox_blue))
+            .build()
+        val locationComponent = mMap.locationComponent
+        locationComponent.activateLocationComponent(requireContext(), loadedMapStyle)
+        locationComponent.applyStyle(options)
+        locationComponent.cameraMode = CameraMode.TRACKING
+        locationComponent.renderMode = RenderMode.COMPASS
+        locationComponent.isLocationComponentEnabled = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mMapView.onPause()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mMapView.onStop()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        mMapView.onSaveInstanceState(outState)
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        mMapView.onLowMemory()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mMapView.onDestroy()
     }
 }

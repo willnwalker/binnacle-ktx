@@ -17,6 +17,11 @@ import android.view.ViewGroup
 class BinnacleFragment : Fragment() {
     private lateinit var listener: OnFragmentInteractionListener
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        listener = context as OnFragmentInteractionListener
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -25,8 +30,4 @@ class BinnacleFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_binnacle, container, false)
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        listener = context as OnFragmentInteractionListener
-    }
 }

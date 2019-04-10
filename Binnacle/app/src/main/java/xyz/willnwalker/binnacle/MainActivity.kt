@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
 import kotlinx.android.synthetic.main.activity_main.*
@@ -45,8 +46,11 @@ class MainActivity : AppCompatActivity(), OnFragmentInteractionListener, Permiss
         navController = findNavController(R.id.navHostFragment)
         mBottomNav = bottomNavigationView
         mBottomNav.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+        mBottomNav.selectedItemId = R.id.navigation_binnacle
         permissionsManager = PermissionsManager(this)
-        mBottomNav.selectedItemId = R.id.navigation_charts
+        if(!PermissionsManager.areLocationPermissionsGranted(this)){
+            permissionsManager.requestLocationPermissions(this)
+        }
     }
 
     /// Location stuff
@@ -69,20 +73,20 @@ class MainActivity : AppCompatActivity(), OnFragmentInteractionListener, Permiss
     override fun onPermissionResult(granted: Boolean) {
         Log.d(TAG, "onPermissionResult called.")
         if(granted){
-            showDeviceLocation(mMap.style!!)
-            Log.d(TAG, "Location permission granted.")
+            Log.d(TAG, "Location permission granted by user.")
         }
         else{
-            Log.d(TAG, "Location permission denied.")
+            Log.d(TAG, "Location permission denied by user.")
             MaterialDialog(this).show {
                 title(text = "Can't get Device Location")
                 message(text = "Since you denied the Location Permission, Binnacle can't show your location. You can enable this permission from Device Settings -> App Info")
+                onDismiss { finish() }
             }
         }
     }
 
     override fun requestLocationPermissions() {
-        PermissionsManager(this).requestLocationPermissions(this)
+        return
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
