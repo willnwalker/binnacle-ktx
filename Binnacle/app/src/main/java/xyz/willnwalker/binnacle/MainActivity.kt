@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity(), OnFragmentInteractionListener, Permiss
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_readouts -> {
+                navController.navigate(R.id.readoutFragment)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_binnacle -> {
@@ -46,7 +47,7 @@ class MainActivity : AppCompatActivity(), OnFragmentInteractionListener, Permiss
         navController = findNavController(R.id.navHostFragment)
         mBottomNav = bottomNavigationView
         mBottomNav.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
-        mBottomNav.selectedItemId = R.id.navigation_binnacle
+        mBottomNav.selectedItemId = R.id.readoutFragment
         permissionsManager = PermissionsManager(this)
         if(!PermissionsManager.areLocationPermissionsGranted(this)){
             permissionsManager.requestLocationPermissions(this)

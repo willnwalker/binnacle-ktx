@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import kotlinx.android.synthetic.main.fragment_binnacle.*
+import kotlinx.android.synthetic.main.fragment_readouts.*
 
 /**
  * A simple [Fragment] subclass.
@@ -13,8 +16,9 @@ import android.view.ViewGroup
  * [OnFragmentInteractionListener] interface
  * to handle interaction events.
  */
-class BinnacleFragment : Fragment() {
+class ReadoutFragment : Fragment() {
     private lateinit var listener: OnFragmentInteractionListener
+    private lateinit var mSpeedView: TextView
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -26,7 +30,12 @@ class BinnacleFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_binnacle, container, false)
+        return inflater.inflate(R.layout.fragment_readouts, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mSpeedView = speedView
     }
 
 }

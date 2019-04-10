@@ -11,8 +11,10 @@
     <fragment
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" app:navGraph="@navigation/nav_graph" app:defaultNavHost="true"
-            tools:layout_editor_absoluteY="327dp" tools:layout_editor_absoluteX="142dp" android:id="@+id/navHostFragment"/>
+            android:layout_height="0dp" app:navGraph="@navigation/nav_graph" app:defaultNavHost="true"
+            tools:layout_editor_absoluteX="142dp"
+            android:id="@+id/navHostFragment" app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+            app:layout_constraintTop_toTopOf="parent"/>
     <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
             android:layout_width="0dp"
